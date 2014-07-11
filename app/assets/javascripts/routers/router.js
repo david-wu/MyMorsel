@@ -13,7 +13,7 @@ window.Morsels.Routers.Main = Backbone.Router.extend({
     $navBarEl = $('#navBarEl');
     $mainEl = $('#mainEl');
     $footerEl = $('#footerEl');
-
+// 
     // API will check session_token
     this._currentUser = new Morsels.Models.User({
       fname: Cookie.get('fname'),
