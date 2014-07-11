@@ -1,7 +1,7 @@
 window.Morsels.Routers.Main = Backbone.Router.extend({
   routes: {
-    '': 'explore',
-    'explore': 'explore',
+    '': 'index',
+    'index': 'index',
     'perks': 'perks',
     'events/:id': 'showEvent',
     'user/new': 'signUp',
@@ -21,15 +21,11 @@ window.Morsels.Routers.Main = Backbone.Router.extend({
       user_id: Cookie.get('user_id'),
     });
 
-    // this._events = new Indie.Collections.Events()
-    // this._events.hasEvents = true;
-    // this._perks = new Indie.Collections.Perks()
-    // this._perks.hasPerks = true;
     this._generateNavBar(this._currentUser);
-    // this._generateFooter();
+    this._generateFooter();
   },
-  explore: function(){
-    // console.log('Router#Index')
+  index: function(){
+    console.log('Router#Index')
     // var view = new Indie.Views.Frame({
     //   collection: this._events
     // });
@@ -38,22 +34,10 @@ window.Morsels.Routers.Main = Backbone.Router.extend({
     //     view.render();
     //   }
     // })
-    // this._swapView(view);
-  },
-  perks: function(){
-    console.log('perks')
-    var view = new Indie.Views.Frame({
-      collection: this._perks
-    })
-    this._perks.fetch({
-      success: function(){
-        view.render();
-      }
-    })
     this._swapView(view);
   },
   signUp: function(){
-    var newUserView = new Indie.Views.NewUser();
+    var newUserView = new Morsels.Views.NewUser();
     this._swapView(newUserView);
     newUserView.render();
   },
@@ -61,44 +45,44 @@ window.Morsels.Routers.Main = Backbone.Router.extend({
     Cookie.delete('fname')
     Cookie.delete('session_token')
     Cookie.delete('user_id')
-    this._currentUser = new Indie.Models.User();
+    this._currentUser = new Morsels.Models.User();
     this.navigate('explore', {trigger: true});
     this._generateNavBar(this._currentUser);
   },
-  newEvent: function(){
-    if(!Cookie.get('session_token')){
-      this.navigate('user/login', {trigger: true});
-      return false;
-    }
+  // newEvent: function(){
+  //   if(!Cookie.get('session_token')){
+  //     this.navigate('user/login', {trigger: true});
+  //     return false;
+  //   }
 
-    var newEventView = new Indie.Views.NewEvent();
-    this._swapView(newEventView);
-    newEventView.render();
-  },
-  showEvent: function(id){
-    if(this._events.get(id)){
-      var event = this._events.get(id)
-    }else{
-      var event = new Indie.Models.Event({id:id})
-    }
-    var perks_col = new Indie.Collections.Perks();
-    var eventShow = new Indie.Views.EventShow({
-      event: event,
-      perks: perks_col
-    });
-    event.fetch({
-      success: function(response){
-        console.log("fetched", response);
-        var perks_arr = event.get("perks")
-        if (perks_arr) {
-          for(var i = 0; i < perks_arr.length; i++){
-            perks_col.add(new Indie.Models.Perk(perks_arr[i]));
-          }
-        };        
-      }
-    });
-    this._swapView(eventShow);
-  },
+  //   var newEventView = new Indie.Views.NewEvent();
+  //   this._swapView(newEventView);
+  //   newEventView.render();
+  // },
+  // showEvent: function(id){
+  //   if(this._events.get(id)){
+  //     var event = this._events.get(id)
+  //   }else{
+  //     var event = new Indie.Models.Event({id:id})
+  //   }
+  //   var perks_col = new Indie.Collections.Perks();
+  //   var eventShow = new Indie.Views.EventShow({
+  //     event: event,
+  //     perks: perks_col
+  //   });
+  //   event.fetch({
+  //     success: function(response){
+  //       console.log("fetched", response);
+  //       var perks_arr = event.get("perks")
+  //       if (perks_arr) {
+  //         for(var i = 0; i < perks_arr.length; i++){
+  //           perks_col.add(new Indie.Models.Perk(perks_arr[i]));
+  //         }
+  //       };        
+  //     }
+  //   });
+  //   this._swapView(eventShow);
+  // },
   _generateNavBar: function(user){
     var barView = new Morsels.Views.NavBar({
       user: user
@@ -114,7 +98,7 @@ window.Morsels.Routers.Main = Backbone.Router.extend({
     this._currentNavBar = navBarView;
   },
   _generateFooter: function(){
-    var footerView = new Indie.Views.Footer();
+    var footerView = new Morsels.Views.Footer();
     this._swapFooter(footerView);
     footerView.render();
   },
