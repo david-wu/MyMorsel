@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   namespace :api do
     resources :user
     resources :location
-    resources :food_profile
-    resources :sighting
+    resources :product
+    resources :review
   end
 end
